@@ -31,14 +31,23 @@ class ProductCRCV(generics.ListCreateAPIView):
     queryset= Product.objects.all()
     serializer_class=ProductSerializer
 
-class CategoryListCV(generics.ListAPIView):
+class CategoryListCV(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-class BrandListCV(generics.ListAPIView):
+    
+    def perform_create(self, serializer):
+        category_name = self.request.data.get('category')
+        category = Category.objects.get(name=category_name)
+        serializer.save(category=category)
+        
+class BrandListCV(generics.ListCreateAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
 
+    def perform_create(self, serializer):
+        brand_name = self.request.data.get('brand')
+        brand = Brand.objects.get(name=brand_name)
+        serializer.save(brand=brand)
 
 class OneCategoryListCV(generics.ListAPIView):
     serializer_class = ProductSerializer

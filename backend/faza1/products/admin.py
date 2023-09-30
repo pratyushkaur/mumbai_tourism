@@ -7,11 +7,11 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product,ProductAdmin)
 
 class BrandAdmin(admin.ModelAdmin):
-    list_display= ('name','id',)
+    list_display= ('name',)
 admin.site.register(Brand,BrandAdmin)
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display= ('name','id',)
+    list_display= ('name',)
 admin.site.register(Category,CategoryAdmin)
 
 admin.site.register(Cart)

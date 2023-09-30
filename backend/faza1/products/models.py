@@ -9,14 +9,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Product.objects.create(title="Bomber jacket",description="casual jacket for all weather",price=12.50,discount_percentage=10,rating=5,stock=20,brand=Brand.objects.get(id=2),category=Category.objects.get(id=3))
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,unique=True,primary_key=True)
 
     def __str__(self):
         return self.name
     
 
 class Brand(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,unique=True,primary_key=True)
 
     def __str__(self):
         return self.name
@@ -26,15 +26,15 @@ class Product(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     price = models.DecimalField(max_digits=6,decimal_places=2)
-    discount_percentage = models.DecimalField(max_digits=4,decimal_places=2)
+    discountPercentage = models.DecimalField(max_digits=4,decimal_places=2)
     rating = models.DecimalField(max_digits=3,decimal_places=2)
     stock = models.IntegerField()
     brand = models.ForeignKey(Brand,null=True,on_delete=models.SET_NULL,
-                                 related_name='prod_brand')
+                                 related_name='prod_brand',)
     category = models.ForeignKey(Category,null=True,on_delete=models.SET_NULL,
-                                 related_name='prod_cat')
-    # thumbnail = models.ImageField()
-    # images = models.ImageField()
+                                 related_name='prod_cat',)
+    thumbnail = models.URLField()
+    images = models.JSONField(encoder=None, decoder=None)
     slug = models.SlugField(default='',null=False,db_index=True)
 
     def __str__(self):
