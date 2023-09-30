@@ -51,16 +51,18 @@ class OneCategoryListCV(generics.ListAPIView):
     serializer_class = ProductSerializer
     
     def get_queryset(self):
-        pk = self.kwargs['pk']
-        return Product.objects.filter(category=pk)
+        pk = self.kwargs['slug']
+        pkr = Category.objects.get(slug=pk).name
+        return Product.objects.filter(category=pkr)
 
 
 class OneBrandListCV(generics.ListAPIView):
     serializer_class = ProductSerializer
    
     def get_queryset(self):
-        pk = self.kwargs['pk']
-        return Product.objects.filter(brand=pk)
+        pk = self.kwargs['slug']
+        pkr = Brand.objects.get(slug=pk).name
+        return Product.objects.filter(brand=pkr)
 """
 the OneCat and OneBrand classes can be written so that they utilize nested
 serialization not sure what is better solution at the momment

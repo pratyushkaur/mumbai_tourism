@@ -7,16 +7,26 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=50,unique=True,primary_key=True)
+    slug = models.SlugField(default='',null=False,db_index=True)
 
     def __str__(self):
         return self.name
     
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args,**kwargs)
+    
 
 class Brand(models.Model):
     name = models.CharField(max_length=50,unique=True,primary_key=True)
+    slug = models.SlugField(default='',null=False,db_index=True)
 
     def __str__(self):
         return self.name
+    
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args,**kwargs)
     
 
 class Product(models.Model):
