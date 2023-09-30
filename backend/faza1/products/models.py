@@ -9,14 +9,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Product.objects.create(title="Bomber jacket",description="casual jacket for all weather",price=12.50,discount_percentage=10,rating=5,stock=20,brand=Brand.objects.get(id=2),category=Category.objects.get(id=3))
 
 class Category(models.Model):
-    name = models.CharField(max_length=50,unique=True,primary_key=True)
+    name = models.CharField(max_length=50,unique=True)
 
     def __str__(self):
         return self.name
     
 
 class Brand(models.Model):
-    name = models.CharField(max_length=50,unique=True,primary_key=True)
+    name = models.CharField(max_length=50,unique=True)
 
     def __str__(self):
         return self.name
