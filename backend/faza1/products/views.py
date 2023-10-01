@@ -13,9 +13,9 @@ from rest_framework import generics
 from .models import Product, Category, Brand
 from .serializers import ProductSerializer,CategorySerializer,BrandSerializer
 
-# class ProductListCV(generics.ListAPIView): #not needed with ProductPriceFilterCV
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
+class ProductListCV(generics.ListAPIView): #not needed with ProductPriceFilterCV
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 class ProductDetailCV(generics.RetrieveAPIView):
     queryset = Product.objects.all()
@@ -68,15 +68,20 @@ the OneCat and OneBrand classes can be written so that they utilize nested
 serialization not sure what is better solution at the momment
 """
 
-class ProductPriceFilterCV(generics.ListAPIView):
+class ProductFilterCV(generics.ListAPIView):
     serializer_class = ProductSerializer
     
     def get_queryset(self):
-        queryset = Product.objects.all()
-        try:
+            queryset = Product.objects.all()
             low = int(self.request.query_params.get('low'))
             high = int(self.request.query_params.get('high'))
-            if low is not None and high is not None:
-                queryset = queryset.filter(price__gt=low, price__lt=high)
-        finally:
+            ordered = self.request.query_params.get('ordered')
+            queryset = queryset.filter(price__gt=low, price__lt=high).order_by(ordered)
             return queryset
+class ProductSearchCV(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    
+    def get_queryset(self):
+        searched = self.request.query_params.get('searched')
+        queryset= Product.objects.filter(title__icontains=str(searched))
+        return queryset
