@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    ProductListCV,
+    # ProductListCV,
     ProductDetailCV,
     ProductRUDCV,
     ProductCRCV,
@@ -8,10 +8,12 @@ from .views import (
     BrandListCV,
     OneCategoryListCV,
     OneBrandListCV,
+    ProductPriceFilterCV,
 
     )
 urlpatterns = [
-    path('',ProductListCV.as_view()),
+    # path('',ProductListCV.as_view()),
+    path('',ProductPriceFilterCV.as_view()), #http://127.0.0.1:8000/products/?low=200&high=1000
     path('categories/',CategoryListCV.as_view()),
     path('categories/<slug:slug>/',OneCategoryListCV.as_view()),
     path('brands/',BrandListCV.as_view()),
