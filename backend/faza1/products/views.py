@@ -122,6 +122,7 @@ class ProfileAV(APIView):
     def get(self, request):
         customer = Customer.objects.get(username=request.user.username)
         serializer = CustomerSerializer(customer)
+        print(serializer.data)
         return Response(serializer.data)
 
     # def post(self, request):

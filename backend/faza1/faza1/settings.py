@@ -128,8 +128,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'products.Customer'
 CORS_ORIGIN_ALLOW_ALL = True
+AUTH_USER_MODEL = 'products.Customer'
 
 
 
@@ -146,3 +146,7 @@ SIMPLE_JWT = {
 "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
 "REFRESH_TOKEN_LIFETIME":timedelta(days=3),
 }
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]

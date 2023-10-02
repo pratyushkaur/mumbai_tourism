@@ -61,12 +61,14 @@ class Country(models.Model):
         return self.name
     
 
-class Customer(AbstractUser):
+class Customer(Abstractuser):
     name = models.CharField(max_length=50)
     country = models.ForeignKey(Country,null=True,on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
+
+
     
 
 class Cart(models.Model):
