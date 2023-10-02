@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import (
     ProductListCV,
     ProductDetailCV,
@@ -10,6 +11,8 @@ from .views import (
     OneBrandListCV,
     ProductFilterCV,
     ProductSearchCV,
+    
+    
 
     )
 urlpatterns = [
@@ -22,8 +25,8 @@ urlpatterns = [
     path('brands/<slug:slug>/',OneBrandListCV.as_view()),
     path('admin/',ProductCRCV.as_view()),
     path('admin/<slug:slug>/',ProductRUDCV.as_view()),
-    path('<slug:slug>/',ProductDetailCV.as_view()),]
-    
+    path('<slug:slug>/',ProductDetailCV.as_view()),
+]
     
     
     

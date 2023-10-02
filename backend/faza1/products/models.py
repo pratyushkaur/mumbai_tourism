@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
@@ -70,7 +70,7 @@ class Customer(AbstractUser):
     
 
 class Cart(models.Model):
-    checked_out = models.BooleanField()
+    checked_out = models.BooleanField(default=False)
     customer = models.ForeignKey(Customer,null=True,on_delete=models.SET_NULL)
     products = models.ManyToManyField(Product, through='Incart')
     
