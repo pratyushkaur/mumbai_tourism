@@ -59,7 +59,6 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ComplaintSerializer(serializers.ModelSerializer):
-    customer = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     class Meta:
         model = Complaint
         fields = ['title', 'content','customer']

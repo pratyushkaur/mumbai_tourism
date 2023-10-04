@@ -144,9 +144,12 @@ class ComplaintCV(generics.CreateAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
     
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['request'] = self.request
-        return context
+    # def get_serializer_context(self):
+    #     context = super().get_serializer_context()
+    #     context['request'] = self.request
+    #     return context
+    
+    def perform_create(self, serializer):
+        serializer.save(customer=self.request.user)
 
     
