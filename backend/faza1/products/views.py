@@ -12,12 +12,19 @@ from rest_framework import generics
 
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product, Category, Brand
+from .models import (Product,
+                     Category,
+                     Brand,
+                     Customer,
+                     Complaint,
+                    )
 from .serializers import (ProductSerializer,
                           CategorySerializer,
                           BrandSerializer,
                           ReviewSerializer,
-                          CustomerSerializer,)
+                          CustomerSerializer,
+                          ComplaintSerializer,
+                          )
 
 class ProductListCV(generics.ListAPIView): #not needed with ProductPriceFilterCV
     queryset = Product.objects.all()
@@ -105,16 +112,15 @@ def signupFV(request):
     else:
         return Response(serializer.errors, status=status.HTTP_200_OK)
 
-# @api_view(['POST'])
-# def profileFV(request):
+@api_view(['GET'])
+def profileFV(request):
     
-#     serializer = CustomerSerializer(data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-        
-#     else:
-#         return Response(serializer.errors, status=status.HTTP_200_OK)
+    def get(self, request):
+        customer = Customer.objects.get(username=request.user.username)
+        serializer = CustomerSerializer(customer)
+        print(serializer.data)
+        return Response(serializer.data)
+
 
 class ProfileAV(APIView):
     permission_classes = [IsAuthenticated]
@@ -132,3 +138,15 @@ class ProfileAV(APIView):
     #         return Response(serializer.data)
     #     else:
     #         return Response(serializer.errors)
+
+class ComplaintCV(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Complaint.objects.all()
+    serializer_class = ComplaintSerializer
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    

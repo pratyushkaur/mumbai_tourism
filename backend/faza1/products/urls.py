@@ -11,10 +11,11 @@ from .views import (
     OneBrandListCV,
     ProductFilterCV,
     ProductSearchCV,
+    # ReviewCV,
     
-    
+     )
 
-    )
+
 urlpatterns = [
     path('',ProductListCV.as_view()),
     path('filter/',ProductFilterCV.as_view()), #http://127.0.0.1:8000/products/?low=200&high=1000
@@ -26,6 +27,7 @@ urlpatterns = [
     path('admin/',ProductCRCV.as_view()),
     path('admin/<slug:slug>/',ProductRUDCV.as_view()),
     path('<slug:slug>/',ProductDetailCV.as_view()),
+    # path('<slug:slug>/review',ReviewCV.as_view()),
 ]
     
     

@@ -61,7 +61,7 @@ class Country(models.Model):
         return self.name
     
 
-class Customer(Abstractuser):
+class Customer(AbstractUser):
     name = models.CharField(max_length=50)
     country = models.ForeignKey(Country,null=True,on_delete=models.SET_NULL)
 
@@ -103,7 +103,7 @@ class Review(models.Model):
         unique_together = ('customer','product')
     
 class Complaint(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE,null=True)
     title = models.CharField(max_length=50)
     content = models.TextField()
     
