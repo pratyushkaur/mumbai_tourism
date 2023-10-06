@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from products.views import (signupFV,
                             ProfileAV,
-                            profileFV,
                             ComplaintCV
                             )
 from rest_framework_simplejwt.views import (
@@ -36,5 +35,4 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/',signupFV, name = 'signup'),
     path('profile/',ProfileAV.as_view(), name = 'profile'),
-    path('profilefv/',profileFV, name = 'profilefv'),
 ]

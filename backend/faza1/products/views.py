@@ -1,4 +1,4 @@
-# from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 # from rest_framework.exceptions import ValidationError
@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 # from rest_framework import mixins
 # from rest_framework import viewsets
-
+import json
 from rest_framework.permissions import IsAuthenticated
 
 from .models import (Product,
@@ -17,6 +17,8 @@ from .models import (Product,
                      Brand,
                      Customer,
                      Complaint,
+                     Cart,
+                     Incart,
                     )
 from .serializers import (ProductSerializer,
                           CategorySerializer,
@@ -112,14 +114,7 @@ def signupFV(request):
     else:
         return Response(serializer.errors, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
-def profileFV(request):
-    
-    def get(self, request):
-        customer = Customer.objects.get(username=request.user.username)
-        serializer = CustomerSerializer(customer)
-        print(serializer.data)
-        return Response(serializer.data)
+
 
 
 class ProfileAV(APIView):
@@ -152,4 +147,28 @@ class ComplaintCV(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(customer=self.request.user)
 
-    
+class AddToCartAV(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            # Assuming data is a list of dictionaries containing item_id and item_amount.
+            for item_data in data:
+                item_id = item_data.get("item_id")
+                item_amount = item_data.get("item_ammount")
+
+                # Retrieve the product and cart instances.
+                product = get_object_or_404(Product, id=item_id)
+                cart= Cart.objects.get(customer=request.user)
+
+                # Create or update the entry in Incart.
+                incart = Incart.objects.create(
+                    cart=cart, product=product, amount=item_amount)
+                print(incart.amount)
+                print(item_amount)
+                # incart.amount = item_amount  # Set the amount field explicitly
+                # incart.save()
+
+            return Response({"message": "Products added to cart successfully."})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)

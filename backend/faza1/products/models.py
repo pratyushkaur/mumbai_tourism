@@ -80,7 +80,7 @@ class Cart(models.Model):
 class Incart(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField(default=1)
+    amount = models.PositiveIntegerField(default=1,null=True)
 
     class Meta:
         unique_together = ('cart','product')
