@@ -70,6 +70,7 @@ class ComplaintSerializer(serializers.ModelSerializer):
     #     return super().create(validated_data)
 
 class IncartSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
     class Meta:
         model = Incart
         fields = ('id', 'product', 'amount')
