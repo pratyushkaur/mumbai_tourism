@@ -26,6 +26,7 @@ from .serializers import (ProductSerializer,
                           ReviewSerializer,
                           CustomerSerializer,
                           ComplaintSerializer,
+                          IncartSerializer,
                           )
 
 class ProductListCV(generics.ListAPIView): #not needed with ProductPriceFilterCV
@@ -172,3 +173,38 @@ class AddToCartAV(APIView):
             return Response({"message": "Products added to cart successfully."})
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+class RemoveFromCartAV(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+            try:
+                data = json.loads(request.body)
+                product_id = data.get("item_id")
+
+                if not product_id:
+                    return Response({"error": "Product ID is required in the request body."}, status=status.HTTP_400_BAD_REQUEST)
+
+                cart = Cart.objects.filter(customer=request.user, checked_out=False).first()
+                if cart:
+                    try:
+                        incart_item = Incart.objects.get(cart=cart, product=product_id)
+                        incart_item.delete()
+                        return Response({"message": "Item removed from cart successfully."}, status=status.HTTP_204_NO_CONTENT)
+                    except Incart.DoesNotExist:
+                        return Response({"error": "Item not found in the cart."}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response({"error": "Cart is empty."}, status=status.HTTP_400_BAD_REQUEST)
+            except json.JSONDecodeError:
+                return Response({"error": "Invalid JSON data in the request body."}, status=status.HTTP_400_BAD_REQUEST)
+class CartItemsListAV(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        cart = Cart.objects.filter(customer=request.user, checked_out=False).first()
+        if cart:
+            cart_items = Incart.objects.filter(cart=cart)
+            serializer = IncartSerializer(cart_items, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({"message": "Cart is empty."}, status=status.HTTP_200_OK)
+    pass

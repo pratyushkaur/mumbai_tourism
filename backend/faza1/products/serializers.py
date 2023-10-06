@@ -5,6 +5,7 @@ from .models import (Product,
                     Review, 
                     Customer,
                     Complaint,
+                    Incart
                     )
 from django.contrib.auth.hashers import make_password
 
@@ -67,3 +68,8 @@ class ComplaintSerializer(serializers.ModelSerializer):
     #     customer = request.user
     #     validated_data['customer'] = customer
     #     return super().create(validated_data)
+
+class IncartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Incart
+        fields = ('id', 'product', 'amount')

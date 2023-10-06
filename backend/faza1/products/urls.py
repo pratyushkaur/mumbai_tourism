@@ -13,6 +13,8 @@ from .views import (
     ProductSearchCV,
     # ReviewCV,
     AddToCartAV,
+    RemoveFromCartAV,
+    CartItemsListAV
     
      )
 
@@ -23,6 +25,8 @@ urlpatterns = [
     path('search/',ProductSearchCV.as_view()),
     path('categories/',CategoryListCV.as_view()),
     path('additems/',AddToCartAV.as_view()),
+    path('removeitem/',RemoveFromCartAV.as_view()),
+    path('listitems/',CartItemsListAV.as_view()),
     path('categories/<slug:slug>/',OneCategoryListCV.as_view()),
     path('brands/',BrandListCV.as_view()),
     path('brands/<slug:slug>/',OneBrandListCV.as_view()),
